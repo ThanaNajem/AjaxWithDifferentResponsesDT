@@ -12,9 +12,13 @@ success: function(xml) {
 
 var select = $('#PersonName');
 	var optionsHtml = new Array();
+
+optionsHtml.push( "<option class='ddindent' value='0'>please choose</option>");
+
     $('age', xml).each(function(){
                   var value = $(this).attr('value');
                   var label = $(this).text();
+
 optionsHtml.push( "<option class='ddindent' value='"+ value +"'>"+label+"</option>");
 
         });
@@ -26,6 +30,54 @@ select.append(optionsHtml);
 			 console.log(xml.responseText);
 		}
 }); 
+
+
+$('#PersonName').on('change',function(){
+var PersonName = $('#PersonName').val();
+ var flag = false;
+if (PersonName!=0) {
+
+	$.ajax({
+
+		url:"person.xml",
+		method:"GET",
+		dataType:"xml",
+		success:function(xml){ 
+
+			   $('age', xml).each(function(){
+                  var value = $(this).attr('value');
+                  var label = $(this).text();
+if(value==PersonName){
+flag=true;
+			   }
+
+        });
+			  
+  
+if (flag) {
+
+  $('#PersonAge').val(PersonName);
+}
+},
+		error:function(xml){
+		 
+			 console.log(xml.responseText);
+		}
+
+	});
+
+}
+	else{alert("please choose");
+
+  $('#PersonAge').val('');
+			
+		}
+});
+
+
+
+ 
+ 
 
 	 
 	$.ajax({
