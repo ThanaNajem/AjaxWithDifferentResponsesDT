@@ -2,37 +2,32 @@ $(document).ready(function(){
 /**/
 
 /* start json */
-	$.ajax({
-
-		url:"countries.php",
-		method:"POST",
-		dataType:"JSON",
-		success:function(data){ 
-
-			var jsonData = JSON.stringify(data)
-			 var obj = JSON.parse(jsonData)
-			 // console.log(obj);
-			 // alert("object"+obj)
-			 //   alert(obj.length)
-  
 
 
-var $el = $("#CountryName"); 
-    $el.empty(); // remove old options
-    $el.append("<option value="+0+">Please Select</option>");
-    $.each(obj, function(value, key) {
-        $el.append("<option value='"+ key +"'>"+value+"</option>");
-    });  
+$.ajax({
+type: "GET",
+url: "person.xml",
+dataType: "xml",
+success: function(xml) {
 
-			
-		},
-		error:function(data){
+var select = $('#PersonName');
+	var optionsHtml = new Array();
+    $('age', xml).each(function(){
+                  var value = $(this).attr('value');
+                  var label = $(this).text();
+optionsHtml.push( "<option class='ddindent' value='"+ value +"'>"+label+"</option>");
+
+        });
+optionsHtml = optionsHtml.join('');
+select.append(optionsHtml);
+	}, //sucess close
+	error:function(xml){
 		 
-			 console.log(data.responseText);
+			 console.log(xml.responseText);
 		}
+}); 
 
-	});
-/* end json */
+	 
 	$.ajax({
 
 		url:"countries.php",
